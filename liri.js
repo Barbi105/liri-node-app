@@ -1,27 +1,30 @@
+//variable
+
 require('dotenv').config();
 var keys = require('./keys.js');
 var moment = require('moment');
 var axios = require('axios');
-var spotify = new Spotify(keys.spotify);
+var Spotify = require('node-spotify-api');
+// var spotify = new Spotify(keys.spotify);
 moment().format()
+var command = process.argv[2];
+var choice = process.argv.slice(3).join('+');
 
-// Make it so liri.js can take in one of the following commands:
-
-//    * `concert-this`
-
-// `node liri.js concert-this <artist/band name here>`
-
-//    * This will search the Bands in Town Artist Events API (`"https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"`) for an artist and render the following information about each event to the terminal:
-
-//      * Name of the venue
-
-//      * Venue location
-
-//      * Date of the Event (use moment to format this as "MM/DD/YYYY")
+var queryURL = "https://rest.bandsintown.com/artists/" + choice + "/events?app_id=codingbootcamp";
 
 
-//    * `spotify-this-song`
+// concert this
+if (command == "concert-this"){
+axios.get(queryURL).then(
+    function(response){
+        var results = response.data;
+        for (var i = 0; i < results.length; i++){
+        // console.log(response);
+        console.log("Venue: " + results[i].venue.name);
+        console.log("Location: " + results[i].venue.city +', ' + results[i].venue.country)
+        console.log("Date: " + results[i].datetime)
+         }
+    }
+)
+}
 
-//    * `movie-this`
-
-//    * `do-what-it-says`
