@@ -44,9 +44,9 @@ function concert() {
 }
 //spotify-this-song function
 function spotify() {
-    // if (!choice) {
-    //     choice = "The Sign";
-    //   }else..
+    if (!choice) {
+        choice = "The Sign";
+    }
     var spotify = new Spotify(keys.spotify);
     spotify.search({ type: 'track', query: choice }, function (err, response) {
         if (err) {
@@ -59,13 +59,13 @@ function spotify() {
             console.log("Preview: " + result.preview_url);
             console.log("________________________________")
         }
-    })
+    });
 }
 //movie-this function
 function movie() {
-    // if (!choice) {
-    //     choice = "Mr Nobody";
-    //   }else..
+    if (!choice) {
+        choice = "Mr Nobody";
+      }
     var queryURL = "http://www.omdbapi.com/?t=" + choice + "&y=&plot=short&apikey=trilogy";
     axios.get(queryURL).then(
         function (response) {
