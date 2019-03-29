@@ -13,12 +13,8 @@ moment().format();
 var command = process.argv[2];
 var choice = process.argv.slice(3).join('+');
 
-// concert this
-if (command == "concert-this") {
-    concert();
-}
-    function concert()
-    {
+//concert-this function
+function concert() {
     var queryURL = "https://rest.bandsintown.com/artists/" + choice + "/events?app_id=codingbootcamp";
     axios.get(queryURL).then(
         function (response) {
@@ -31,17 +27,13 @@ if (command == "concert-this") {
                 console.log("Date: " + results[i].datetime);
                 console.log("________________________________")
             }
-        }
-    )
+        })
 }
-
-//spotify-this
-if (command == "spotify-this-song") {
-    spotify();
-}
-
-    function spotify()
-    {
+//spotify-this-song function
+function spotify(choice) {
+    if (!choice) {
+        choice = "The Sign";
+      }
     var spotify = new Spotify(keys.spotify);
     spotify.search({ type: 'track', query: choice }, function (err, response) {
         if (err) {
@@ -55,17 +47,14 @@ if (command == "spotify-this-song") {
         }
     })
 }
-
-//movie-this
-if (command == "movie-this") {
- movie();   
-}
-
-    function movie()
-    {
+//movie-this function
+function movie(choice) {
+    if (!choice) {
+        choice = "Mr Nobody";
+      }
     var queryURL = "http://www.omdbapi.com/?t=" + choice + "&y=&plot=short&apikey=trilogy";
     axios.get(queryURL).then(
-        function(response){
+        function (response) {
             console.log("Title: " + response.data.Title);
             console.log("Year: " + response.data.Year);
             console.log("IMBD Rating: " + response.data.imdbRating);
@@ -76,9 +65,18 @@ if (command == "movie-this") {
             console.log("Actors: " + response.data.Actors);
         })
 }
-
-if(command=="do-what-it-says"){
-    fs.readFile("random.txt","utf8",function(error,data){
+//main program
+if (command == "concert-this") {
+    concert();
+}
+if (command == "spotify-this-song") {
+    spotify();
+}
+if (command == "movie-this") {
+    movie();
+}
+if (command == "do-what-it-says") {
+    fs.readFile("random.txt", "utf8", function (error, data) {
         var task = data.split(",");
         command = task[0];
         choice = task[1];
@@ -89,8 +87,8 @@ if(command=="do-what-it-says"){
             spotify();
         };
         if (command == "movie-this") {
-            movie();   
-         };
+            movie();
+        };
     });
 }
 
