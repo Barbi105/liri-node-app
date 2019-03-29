@@ -5,6 +5,7 @@ var keys = require('./keys.js');
 var moment = require('moment');
 var axios = require('axios');
 var Spotify = require('node-spotify-api');
+var fs = require('fs');
 
 moment().format();
 
@@ -14,6 +15,10 @@ var choice = process.argv.slice(3).join('+');
 
 // concert this
 if (command == "concert-this") {
+    concert();
+}
+    function concert()
+    {
     var queryURL = "https://rest.bandsintown.com/artists/" + choice + "/events?app_id=codingbootcamp";
     axios.get(queryURL).then(
         function (response) {
@@ -23,7 +28,7 @@ if (command == "concert-this") {
                 console.log("Venue: " + results[i].venue.name);
                 console.log("Location: " + results[i].venue.city + ', ' + results[i].venue.country)
                 // store date in a variable and use moments format(MM/DD/YYYY) and display that
-                console.log("Date: " + results[i].datetime)
+                console.log("Date: " + results[i].datetime);
                 console.log("________________________________")
             }
         }
@@ -32,6 +37,11 @@ if (command == "concert-this") {
 
 //spotify-this
 if (command == "spotify-this-song") {
+    spotify();
+}
+
+    function spotify()
+    {
     var spotify = new Spotify(keys.spotify);
     spotify.search({ type: 'track', query: choice }, function (err, response) {
         if (err) {
@@ -48,6 +58,11 @@ if (command == "spotify-this-song") {
 
 //movie-this
 if (command == "movie-this") {
+ movie();   
+}
+
+    function movie()
+    {
     var queryURL = "http://www.omdbapi.com/?t=" + choice + "&y=&plot=short&apikey=trilogy";
     axios.get(queryURL).then(
         function(response){
@@ -60,5 +75,22 @@ if (command == "movie-this") {
             console.log("Plot: " + response.data.Plot);
             console.log("Actors: " + response.data.Actors);
         })
+}
+
+if(command=="do-what-it-says"){
+    fs.readFile("random.txt","utf8",function(error,data){
+        var task = data.split(",");
+        command = task[0];
+        choice = task[1];
+        if (command == "concert-this") {
+            concert();
+        };
+        if (command == "spotify-this-song") {
+            spotify();
+        };
+        if (command == "movie-this") {
+            movie();   
+         };
+    });
 }
 
