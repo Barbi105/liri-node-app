@@ -1,15 +1,16 @@
-//variable
-
+//install
 require('dotenv').config();
+
 var keys = require('./keys.js');
 var moment = require('moment');
 var axios = require('axios');
 var Spotify = require('node-spotify-api');
 
-moment().format()
+moment().format();
+
+//variables
 var command = process.argv[2];
 var choice = process.argv.slice(3).join('+');
-
 
 // concert this
 if (command == "concert-this") {
@@ -44,3 +45,20 @@ if (command == "spotify-this-song") {
         }
     })
 }
+
+//movie-this
+if (command == "movie-this") {
+    var queryURL = "http://www.omdbapi.com/?t=" + choice + "&y=&plot=short&apikey=trilogy";
+    axios.get(queryURL).then(
+        function(response){
+            console.log("Title: " + response.data.Title);
+            console.log("Year: " + response.data.Year);
+            console.log("IMBD Rating: " + response.data.imdbRating);
+            console.log("Rotten Tomatoes Rating: " + response.data.Ratings[1].Value);
+            console.log("County: " + response.data.Country);
+            console.log("Language: " + response.data.Language);
+            console.log("Plot: " + response.data.Plot);
+            console.log("Actors: " + response.data.Actors);
+        })
+}
+
